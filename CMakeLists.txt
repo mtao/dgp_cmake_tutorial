@@ -12,8 +12,16 @@ find_package(Boost COMPONENTS filesystem)
 
 
 
+add_library(localization src/hello_map.cpp src/get_hello.cpp)
+target_include_directories(localization PUBLIC include PRIVATE include_private)
+
+set_target_properties(localization PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED YES
+    )
+
 add_executable(hello_world src/hello_world.cpp)
-target_link_libraries(hello_world Boost::filesystem)
+target_link_libraries(hello_world Boost::filesystem localization)
 
 
 # ========================================
@@ -56,3 +64,6 @@ target_link_libraries(harmonic_oscillator Boost::boost)
 
 add_executable(oscillating_cube src/oscillating_cube.cpp)
 target_link_libraries(oscillating_cube igl::opengl_glfw harmonic_oscillator)
+
+
+
