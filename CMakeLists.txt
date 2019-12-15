@@ -10,7 +10,49 @@ project(DGPCMakeTutorial VERSION 0.1
 find_package(Boost COMPONENTS filesystem)
 
 
+
+
 add_executable(hello_world src/hello_world.cpp)
 target_link_libraries(hello_world Boost::filesystem)
 
 
+# ========================================
+# https://cliutils.gitlab.io/modern-cmake/chapters/projects/fetch.html
+
+# get hte fetchcontent module
+include(FetchContent REQUIRED)
+# declare where to fetch libigl from
+FetchContent_Declare(
+    libigl
+    GIT_REPOSITORY https://github.com/libigl/libigl.git
+    #GIT_TAG f6b406427400ed7ddb56cfc2577b6af571827c8c
+    GIT_TAG v2.1.0
+    )
+
+#for igl we have to set a variable to activate the viewer
+set(LIBIGL_USE_STATIC_LIBRARY OFF)
+set(LIBIGL_WITH_OPENGL ON)
+set(LIBIGL_WITH_OPENGL_GLFW ON)
+set(LIBIGL_WITH_PNG OFF)
+set(LIBIGL_WITH_TETGEN OFF)
+set(LIBIGL_WITH_TRIANGLE OFF)
+set(LIBIGL_WITH_PREDICATES OFF)
+set(LIBIGL_WITH_XML OFF)
+set(LIBIGL_WITH_EMBREE OFF)
+set(LIBIGL_WITH_COMISO OFF)
+
+# new cmake can update in one shot, but the older one requires one extra command
+if(${CMAKE_VERSION} VERSION_LESS 3.14)
+    FetchContent_Populate(libigl)
+    add_subdirectory(${libigl_SOURCE_DIR} ${libigl_BINARY_DIR})
+else()
+    FetchContent_MakeAvailable(libigl)
+endif()
+
+
+add_library(harmonic_oscillator src/harmonic_oscillator.cpp include/harmonic_oscillator.hpp)
+target_include_directories(harmonic_oscillator PUBLIC include)
+target_link_libraries(harmonic_oscillator Boost::boost)
+
+add_executable(oscillating_cube src/oscillating_cube.cpp)
+target_link_libraries(oscillating_cube igl::opengl_glfw harmonic_oscillator)
