@@ -5,4 +5,12 @@ project(DGPCMakeTutorial VERSION 0.1
     LANGUAGES CXX)
 
 
+# https://cmake.org/cmake/help/v3.15/module/FindBoost.html
+
+find_package(Boost COMPONENTS filesystem)
+
+
 add_executable(hello_world src/hello_world.cpp)
+target_link_libraries(hello_world Boost::filesystem)
+
+
