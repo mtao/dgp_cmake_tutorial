@@ -67,3 +67,21 @@ target_link_libraries(oscillating_cube igl::opengl_glfw harmonic_oscillator)
 
 
 
+
+# ========================================
+
+
+
+
+set(DGtal_DIR ${CMAKE_CURRENT_LIST_DIR}/extern/DGtal/build)
+find_package(DGtal CONFIG)
+
+if(DGtal_FOUND)
+else(DGtal_FOUND)
+    message(FATAL_ERROR "Please run the get_deps.sh script!")
+endif(DGtal_FOUND)
+
+add_executable(dgtal_logo ${DGtal_DIR}/../examples/io/boards/logoDGtal.cpp)
+target_include_directories(dgtal_logo PRIVATE ${DGTAL_INCLUDE_DIRS})
+target_link_directories(dgtal_logo PRIVATE ${DGTAL_LIBRARY_DIRS})
+target_link_libraries(dgtal_logo ${DGTAL_LIBRARIES})
