@@ -15,16 +15,19 @@ include(CTest)
 
 set(LANGS en fr es it zh)
 
-add_custom_target(all_tests)
+
+SET(LANG_OBJS "")
 
 function(make_lang_test lang)
     set(TNAME ${lang}_test)
 
-    add_executable(${TNAME} lang_test.cpp)
-    add_test(NAME ${TNAME} COMMAND ${TNAME})
-    target_compile_definitions(${TNAME} PUBLIC -DLANG_TEST_LANG=\"${lang}\")
-    target_link_libraries(${TNAME} PUBLIC Catch2::Catch2 PUBLIC localization)
-    add_dependencies(all_tests ${TNAME})
+    set(myobj  "$<TARGET_OBJECTS:${TNAME}>")
+    list(APPEND LANG_OBJS ${myobj})
+    set(LANG_OBJS ${LANG_OBJS} PARENT_SCOPE)
+
+    add_library(${TNAME} OBJECT lang_test.cpp)
+    target_compile_definitions(${TNAME} PRIVATE -DLANG_TEST_LANG=\"${lang}\")
+    target_link_libraries(${TNAME} PRIVATE Catch2::Catch2 PRIVATE localization)
 endfunction(make_lang_test)
 
 
@@ -33,4 +36,6 @@ foreach(MYLANG ${LANGS})
     make_lang_test(${MYLANG})
 endforeach(MYLANG)
 
+add_executable(tests main.cpp ${LANG_OBJS})
+target_link_libraries(tests PUBLIC Catch2::Catch2 localization)
 
