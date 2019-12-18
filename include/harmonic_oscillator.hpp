@@ -3,7 +3,7 @@
 
 class HarmonicOscillator {
     public:
-        using Point = Eigen::RowVector3d;
+        using Point = std::array<double,3>;
 
 
         void integrate(double timestep);
@@ -14,7 +14,7 @@ class HarmonicOscillator {
 
 
     private:
-        Point _p = Point::Random();
+        Point _p = std::array<double,3>{{2,3,4}};
 
 
 

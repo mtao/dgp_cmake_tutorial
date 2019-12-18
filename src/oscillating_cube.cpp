@@ -34,9 +34,11 @@ int main(int argc, char *argv[])
       if(viewer.core().is_animating) 
       {
 
+          auto p = ho.p();
 
+          auto mp = Eigen::Map<Eigen::RowVector3d>(p.data());
           ho.integrate(timestep);
-          viewer.data().set_mesh(V.rowwise()+ho.p(), F);
+          viewer.data().set_mesh(V.rowwise()+mp, F);
       }
       return false;
   };

@@ -4,9 +4,9 @@ using namespace boost::numeric::odeint;
 
 
 void HarmonicOscillator::run(const Point& x, Point& dxdt, double timestep) {
-    dxdt.x() = -x.y();
-    dxdt.y() = x.x()  ;
-    dxdt.z() = 0;
+    dxdt[0] = -x[1];
+    dxdt[1] = x[0]  ;
+    dxdt[2] = 0;
 }
 void HarmonicOscillator::integrate(double timestep) {
 
