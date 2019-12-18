@@ -85,3 +85,5 @@ add_executable(dgtal_logo ${DGtal_DIR}/../examples/io/boards/logoDGtal.cpp)
 target_include_directories(dgtal_logo PRIVATE ${DGTAL_INCLUDE_DIRS})
 target_link_directories(dgtal_logo PRIVATE ${DGTAL_LIBRARY_DIRS})
 target_link_libraries(dgtal_logo ${DGTAL_LIBRARIES})
+
+add_subdirectory(tests EXCLUDE_FROM_ALL)
